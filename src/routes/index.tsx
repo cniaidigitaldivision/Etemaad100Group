@@ -280,10 +280,10 @@ function Index() {
             { t: "Investor Returns", d: "High-demand retail units with strong rental yield potential and long-term capital appreciation." },
           ].map((c) => (
             <RevealChild key={c.t}>
-              <div className="lux-card h-full rounded-sm p-7">
-                <h3 className="font-display text-xl">{c.t}</h3>
+              <div className="glass-feature-card h-full rounded-[8px] p-7">
+                <h3 className="font-display text-xl text-white drop-shadow-md">{c.t}</h3>
                 <span className="rule-gold mt-4" />
-                <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{c.d}</p>
+                <p className="mt-4 text-sm leading-relaxed text-[#E2E8F0] drop-shadow-sm">{c.d}</p>
               </div>
             </RevealChild>
           ))}
@@ -437,10 +437,10 @@ function Index() {
             { t: "Right Above the Shops", d: "Located on the first floor beside the fashion wing — shop, eat and play in one visit." },
           ].map((c) => (
             <RevealChild key={c.t}>
-              <div className="lux-card h-full rounded-sm p-6">
-                <Baby className="h-6 w-6 text-gold" />
-                <h3 className="mt-4 font-display text-lg">{c.t}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{c.d}</p>
+              <div className="glass-feature-card h-full rounded-[8px] p-6">
+                <Baby className="h-6 w-6 text-gold drop-shadow-md" />
+                <h3 className="mt-4 font-display text-lg text-white drop-shadow-md">{c.t}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-[#E2E8F0] drop-shadow-sm">{c.d}</p>
               </div>
             </RevealChild>
           ))}
