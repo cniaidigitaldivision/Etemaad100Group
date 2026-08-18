@@ -24,6 +24,10 @@ import {
   Instagram,
   Linkedin,
   Check,
+  Percent,
+  CalendarDays,
+  Calculator,
+  KeyRound,
 } from "lucide-react";
 
 import { Reveal, RevealChild } from "@/components/Reveal";
@@ -39,6 +43,7 @@ import apt1 from "@/assets/apt-1bed.jpg";
 import apt2 from "@/assets/apt-2bed.jpg";
 import kids1 from "@/assets/kids-1.jpg";
 import kids2 from "@/assets/kids-2.jpg";
+import bg1 from "@/assets/bg1.jpeg";
 
 const WHATSAPP = "https://wa.me/920000000000";
 const PHONE = "tel:+920000000000";
@@ -92,10 +97,10 @@ const amenities = [
 ];
 
 const plan = [
-  { label: "Booking Amount", value: "XX%", note: "At the time of booking" },
-  { label: "Confirmation", value: "XX%", note: "Within 30 days" },
-  { label: "Quarterly Installments", value: "XX x PKR XXX,XXX", note: "Spread over XX quarters" },
-  { label: "On Possession", value: "XX%", note: "At handover" },
+  { icon: Percent, label: "Booking Amount", value: "XX%", note: "At the time of booking" },
+  { icon: CalendarDays, label: "Confirmation", value: "XX%", note: "Within 30 days" },
+  { icon: Calculator, label: "Quarterly Installments", value: "XX x PKR XXX,XXX", note: "Spread over XX quarters" },
+  { icon: KeyRound, label: "On Possession", value: "XX%", note: "At handover" },
 ];
 
 function SectionTitle({
@@ -171,7 +176,7 @@ function Index() {
           poster={towerImg}
           aria-hidden="true"
         />
-        <div className="absolute inset-0" style={{ background: "var(--gradient-veil)" }} />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))" }} />
 
         <motion.div
           className="relative z-10 mx-auto max-w-4xl px-6 py-28 text-center"
@@ -180,7 +185,7 @@ function Index() {
           variants={staggerContainer(0.18, 0.25)}
         >
           <motion.p
-            className="text-xs tracking-[0.4em] uppercase text-gold sm:text-sm"
+            className="mx-auto max-w-2xl font-display text-lg italic text-gold-soft sm:text-2xl"
             variants={heroSlideUp(0)}
           >
             Where Luxury Meets Opportunity
@@ -202,7 +207,7 @@ function Index() {
             Where Retail Royalty Meets Modern Living
           </motion.p>
           <motion.p
-            className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base"
+            className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-white sm:text-base"
             variants={heroSlideUp(0)}
           >
             Flagship shops, leading fashion brands, a supervised indoor kids play area and modern
@@ -339,9 +344,8 @@ function Index() {
                 <button
                   key={k}
                   onClick={() => setUnit(k)}
-                  className={`flex-1 rounded-sm px-4 py-3 text-sm tracking-widest uppercase transition-colors ${
-                    unit === k ? "bg-gold text-primary-foreground" : "text-muted-foreground hover:text-gold"
-                  }`}
+                  className={`flex-1 rounded-sm px-4 py-3 text-sm tracking-widest uppercase transition-colors ${unit === k ? "bg-gold text-primary-foreground" : "text-muted-foreground hover:text-gold"
+                    }`}
                 >
                   {k === "1bed" ? "1 Bed" : "2 Bed"}
                 </button>
@@ -573,32 +577,187 @@ function Index() {
         </div>
       </section>
 
-      {/* Payment plan */}
-      <section id="payment-plan" className="border-y border-border bg-navy-deep py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6">
+      {/* Payment plan — parallax */}
+      <section
+        id="payment-plan"
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          backgroundImage: `url(${bg1})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+        }}
+      >
+        {/* Cool-toned light frosted overlay */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(to bottom, rgba(100,116,139,0.35) 0%, rgba(100,116,139,0.25) 50%, rgba(100,116,139,0.35) 100%)",
+            backdropFilter: "blur(2px)",
+          }}
+        />
+
+        {/* Content */}
+        <div className="relative mx-auto max-w-7xl px-6 py-28 sm:py-36">
           <Reveal>
-            <SectionTitle
-              eyebrow="Investment"
-              title="Easy Installment Plan"
-              subtitle="Own a shop or an apartment on a comfortable, transparent schedule — built for salaried families and investors alike."
-            />
+            <div className="mx-auto max-w-2xl text-center">
+              <p
+                style={{
+                  fontSize: "14px",
+                  fontWeight: 700,
+                  letterSpacing: "0.35em",
+                  textTransform: "uppercase",
+                  color: "#c1a062",
+                  marginBottom: "16px",
+                }}
+              >
+                Investment
+              </p>
+              <h2
+                className="font-display"
+                style={{
+                  fontSize: "clamp(2rem, 5vw, 3.5rem)",
+                  lineHeight: 1.15,
+                  fontWeight: 700,
+                  color: "#f5f0e8",
+                  marginBottom: "20px",
+                }}
+              >
+                Easy Installment Plan
+              </h2>
+              <span className="rule-gold mx-auto" />
+              <p
+                style={{
+                  marginTop: "20px",
+                  fontSize: "1.25rem",
+                  fontWeight: 600,
+                  lineHeight: 1.75,
+                  color: "rgba(235, 230, 220, 0.95)",
+                }}
+              >
+                Own a shop or an apartment on a comfortable, transparent schedule —{" "}
+                built for salaried families and investors alike.
+              </p>
+            </div>
           </Reveal>
-          <Reveal stagger className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+          {/* Plan cards */}
+          <Reveal stagger className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {plan.map((p) => (
               <RevealChild key={p.label}>
-                <div className="lux-card h-full rounded-sm p-7 text-center">
-                  <p className="text-xs tracking-widest uppercase text-gold">{p.label}</p>
-                  <p className="mt-4 font-display text-2xl">{p.value}</p>
-                  <span className="rule-gold mx-auto mt-4" />
-                  <p className="mt-4 text-sm text-muted-foreground">{p.note}</p>
+                <div
+                  style={{
+                    background: "rgba(6,11,26,0.72)",
+                    border: "1px solid rgba(193,160,98,0.30)",
+                    borderRadius: "14px",
+                    padding: "32px 24px",
+                    textAlign: "center",
+                    backdropFilter: "blur(12px)",
+                    WebkitBackdropFilter: "blur(12px)",
+                    boxShadow: "0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(193,160,98,0.12)",
+                    transition: "transform 0.25s ease, box-shadow 0.25s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)";
+                    (e.currentTarget as HTMLDivElement).style.boxShadow =
+                      "0 16px 48px rgba(0,0,0,0.55), inset 0 1px 0 rgba(193,160,98,0.18)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
+                    (e.currentTarget as HTMLDivElement).style.boxShadow =
+                      "0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(193,160,98,0.12)";
+                  }}
+                >
+                  {/* Icon */}
+                  <div
+                    style={{
+                      width: "48px",
+                      height: "48px",
+                      borderRadius: "50%",
+                      background: "rgba(193,160,98,0.12)",
+                      border: "1px solid rgba(193,160,98,0.35)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      margin: "0 auto 16px",
+                    }}
+                  >
+                    <p.icon style={{ width: "20px", height: "20px", color: "#c1a062" }} />
+                  </div>
+
+                  <p
+                    style={{
+                      fontSize: "10px",
+                      letterSpacing: "0.3em",
+                      textTransform: "uppercase",
+                      color: "#c1a062",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    {p.label}
+                  </p>
+                  <p
+                    className="font-display"
+                    style={{ fontSize: "1.6rem", fontWeight: 700, color: "#f5f0e8", lineHeight: 1.2 }}
+                  >
+                    {p.value}
+                  </p>
+                  <div
+                    style={{
+                      width: "40px",
+                      height: "1px",
+                      background: "linear-gradient(90deg, transparent, #c1a062, transparent)",
+                      margin: "14px auto",
+                    }}
+                  />
+                  <p style={{ fontSize: "0.8rem", color: "rgba(200,190,175,0.75)" }}>{p.note}</p>
                 </div>
               </RevealChild>
             ))}
           </Reveal>
+
+          {/* Fine print + CTA */}
           <Reveal>
-            <p className="mt-8 text-center text-xs text-muted-foreground">
-              Figures shown as editable placeholders. Request the official payment plan from our sales team.
-            </p>
+            <div className="mt-12 text-center">
+              <p style={{ fontSize: "11px", color: "rgba(160,150,135,0.75)", marginBottom: "28px" }}>
+                Figures shown as editable placeholders. Request the official payment plan from our sales team.
+              </p>
+              <a
+                href="#enquire"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "14px 36px",
+                  borderRadius: "8px",
+                  background: "linear-gradient(135deg, #c1a062 0%, #e8c97a 50%, #c1a062 100%)",
+                  backgroundSize: "200% auto",
+                  color: "#060b1a",
+                  fontSize: "12px",
+                  fontWeight: 800,
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                  textDecoration: "none",
+                  boxShadow: "0 4px 24px rgba(193,160,98,0.35)",
+                  transition: "background-position 0.4s ease, box-shadow 0.3s ease, transform 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.backgroundPosition = "right center";
+                  (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 8px 36px rgba(193,160,98,0.5)";
+                  (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.backgroundPosition = "left center";
+                  (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 4px 24px rgba(193,160,98,0.35)";
+                  (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
+                }}
+              >
+                Request Official Plan
+              </a>
+            </div>
           </Reveal>
         </div>
       </section>
@@ -747,20 +906,6 @@ function Index() {
         </div>
       </footer>
 
-      <motion.a
-        href={WHATSAPP}
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Chat on WhatsApp"
-        className="wa-pulse-ring fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gold text-primary-foreground shadow-lg"
-        whileHover={{ scale: 1.12 }}
-        whileTap={{ scale: 0.95 }}
-        initial={{ opacity: 0, scale: 0.7 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 1.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <MessageCircle className="relative z-10 h-6 w-6" />
-      </motion.a>
     </div>
   );
 }

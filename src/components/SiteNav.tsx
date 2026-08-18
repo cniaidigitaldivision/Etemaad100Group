@@ -42,9 +42,9 @@ export function SiteNav() {
           <img
             src={logo}
             alt="GC Royal Emporium logo"
-            width={64}
-            height={64}
-            className={`object-contain transition-all ${scrolled ? "h-14 w-14" : "h-16 w-16"}`}
+            width={80}
+            height={80}
+            className={`object-contain transition-all ${scrolled ? "h-16 w-16" : "h-20 w-20"}`}
           />
           <span className="font-display text-lg tracking-wide text-foreground sm:text-xl">
             GC Royal <span className="gold-text">Emporium</span>
@@ -56,7 +56,7 @@ export function SiteNav() {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-semibold tracking-wide text-muted-foreground transition-colors hover:text-gold"
+              className="text-base font-semibold tracking-wide text-white transition-colors hover:text-gold"
             >
               {l.label}
             </a>
@@ -95,7 +95,7 @@ export function SiteNav() {
                 <a
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="block py-1 text-sm font-semibold tracking-wide text-muted-foreground hover:text-gold"
+                  className="block py-1 text-sm font-semibold tracking-wide text-white hover:text-gold"
                 >
                   {l.label}
                 </a>
