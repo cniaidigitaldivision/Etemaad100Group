@@ -116,7 +116,7 @@ function SectionTitle({
 }) {
   return (
     <div className={center ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
-      <p className="text-xs tracking-[0.35em] uppercase text-gold">{eyebrow}</p>
+      <p className="font-display text-lg font-medium tracking-wider capitalize text-gold">{eyebrow}</p>
       <h2 className="mt-4 font-display text-3xl leading-tight sm:text-4xl md:text-5xl">{title}</h2>
       <span className={`rule-gold mt-6 ${center ? "mx-auto" : ""}`} />
       {subtitle && <p className="mt-6 text-sm leading-relaxed text-muted-foreground sm:text-base">{subtitle}</p>}
@@ -448,8 +448,21 @@ function Index() {
       </section>
 
       {/* Amenities */}
-      <section id="amenities" className="border-y border-border bg-navy-deep py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6">
+      <section id="amenities" className="relative overflow-hidden border-y border-border bg-navy-deep py-24 sm:py-32">
+        <div 
+          className="absolute inset-0 opacity-[0.04]" 
+          style={{ 
+            backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='28' height='49' viewBox='0 0 28 49' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23c1a062' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/svg%3E\")" 
+          }} 
+        />
+        {/* Soft radial ambient glow */}
+        <div 
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[800px] w-[1000px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-[100px]"
+          style={{
+            background: "radial-gradient(circle, rgba(193,160,98,0.2) 0%, rgba(30,58,95,0.4) 50%, transparent 80%)"
+          }}
+        />
+        <div className="relative z-10 mx-auto max-w-7xl px-6">
           <Reveal>
             <SectionTitle
               eyebrow="Amenities"
@@ -604,16 +617,7 @@ function Index() {
         <div className="relative mx-auto max-w-7xl px-6 py-28 sm:py-36">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p
-                style={{
-                  fontSize: "14px",
-                  fontWeight: 700,
-                  letterSpacing: "0.35em",
-                  textTransform: "uppercase",
-                  color: "#c1a062",
-                  marginBottom: "16px",
-                }}
-              >
+              <p className="mb-4 font-display text-lg font-medium tracking-wider capitalize text-gold">
                 Investment
               </p>
               <h2
@@ -722,9 +726,6 @@ function Index() {
           {/* Fine print + CTA */}
           <Reveal>
             <div className="mt-12 text-center">
-              <p style={{ fontSize: "11px", color: "rgba(160,150,135,0.75)", marginBottom: "28px" }}>
-                Figures shown as editable placeholders. Request the official payment plan from our sales team.
-              </p>
               <a
                 href="#enquire"
                 style={{
@@ -779,8 +780,9 @@ function Index() {
               <a href="mailto:sales@gcroyalemporium.com" className="flex items-center gap-3 hover:text-gold">
                 <Mail className="h-4 w-4 text-gold" /> sales@gcroyalemporium.com
               </a>
-              <p className="flex items-center gap-3">
-                <MapPin className="h-4 w-4 text-gold" /> [Site Address], [City], Pakistan
+              <p className="flex items-start gap-3">
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+                <span>GC Royal Emporium Chitral<br />Near Shahi Adda Bus Stand, Krop Risht Bazar Chitral</span>
               </p>
             </div>
           </Reveal>
@@ -849,7 +851,7 @@ function Index() {
                     sales@gcroyalemporium.com
                   </a>
                 </li>
-                <li>[Site Address], [City], Pakistan</li>
+                <li>GC Royal Emporium Chitral<br />Near Shahi Adda Bus Stand, Krop Risht Bazar Chitral</li>
               </ul>
               <div className="mt-5 flex gap-3">
                 <a
