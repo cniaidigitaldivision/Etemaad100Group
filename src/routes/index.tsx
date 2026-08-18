@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { heroSlideUp, staggerContainer, staggerChild, viewportOnce } from "@/lib/motion";
 import {
   Building2,
   Store,
@@ -20,11 +22,11 @@ import {
   MessageCircle,
   Facebook,
   Instagram,
-  Youtube,
+  Linkedin,
   Check,
 } from "lucide-react";
 
-import { Reveal } from "@/components/Reveal";
+import { Reveal, RevealChild } from "@/components/Reveal";
 import { SiteNav } from "@/components/SiteNav";
 import { EnquiryForm } from "@/components/EnquiryForm";
 import logo from "@/assets/logo-transparent.png";
@@ -171,35 +173,67 @@ function Index() {
         />
         <div className="absolute inset-0" style={{ background: "var(--gradient-veil)" }} />
 
-        <div className="relative z-10 mx-auto max-w-4xl px-6 py-28 text-center">
-          <p className="text-xs tracking-[0.4em] uppercase text-gold sm:text-sm">Where Luxury Meets Opportunity</p>
-          <h1 className="mt-5 font-display text-5xl leading-[1.05] sm:text-7xl md:text-8xl">
-            GC Royal <span className="gold-text">Emporium</span>
-          </h1>
-          <span className="rule-gold mx-auto mt-7" />
-          <p className="mx-auto mt-6 max-w-2xl font-display text-lg italic text-gold-soft sm:text-2xl">
+        <motion.div
+          className="relative z-10 mx-auto max-w-4xl px-6 py-28 text-center"
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer(0.18, 0.25)}
+        >
+          <motion.p
+            className="text-xs tracking-[0.4em] uppercase text-gold sm:text-sm"
+            variants={heroSlideUp(0)}
+          >
+            Where Luxury Meets Opportunity
+          </motion.p>
+          <motion.h1
+            className="mt-5 font-display text-5xl leading-[1.05] sm:text-7xl md:text-8xl"
+            variants={heroSlideUp(0)}
+          >
+            Eteemad 100 <br /><span className="gold-text">Groups</span>
+          </motion.h1>
+          <motion.span
+            className="rule-gold mx-auto mt-7"
+            variants={heroSlideUp(0)}
+          />
+          <motion.p
+            className="mx-auto mt-6 max-w-2xl font-display text-lg italic text-gold-soft sm:text-2xl"
+            variants={heroSlideUp(0)}
+          >
             Where Retail Royalty Meets Modern Living
-          </p>
-          <p className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+          </motion.p>
+          <motion.p
+            className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base"
+            variants={heroSlideUp(0)}
+          >
             Flagship shops, leading fashion brands, a supervised indoor kids play area and modern
             1 &amp; 2 bed apartments — all in one prime-location high-rise address.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </section>
 
       {/* Stats strip */}
       <section className="border-y border-border bg-navy-deep">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px px-4 sm:px-6 lg:grid-cols-4">
+        <motion.div
+          className="mx-auto grid max-w-7xl grid-cols-2 gap-px px-4 sm:px-6 lg:grid-cols-4"
+          variants={staggerContainer(0.12, 0.05)}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ ...viewportOnce, amount: 0.2 }}
+        >
           {stats.map((s) => (
-            <div key={s.label} className="flex items-center gap-4 px-2 py-8">
+            <motion.div
+              key={s.label}
+              className="flex items-center gap-4 px-2 py-8"
+              variants={staggerChild}
+            >
               <s.icon className="h-7 w-7 shrink-0 text-gold" />
               <div>
                 <p className="font-display text-xl sm:text-2xl">{s.value}</p>
                 <p className="text-xs tracking-widest uppercase text-muted-foreground">{s.label}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* Shops */}
@@ -212,48 +246,50 @@ function Index() {
           />
         </Reveal>
 
-        <div className="mt-14 grid gap-5 lg:grid-cols-3">
-          {shopPics.map((p, i) => (
-            <Reveal key={p.caption} delay={i * 90}>
-              <figure className="lux-card group overflow-hidden rounded-sm">
-                <img
-                  src={p.src}
-                  alt={p.alt}
-                  width={1280}
-                  height={960}
-                  loading="lazy"
-                  className="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
+        <Reveal stagger className="mt-14 grid gap-5 lg:grid-cols-3">
+          {shopPics.map((p) => (
+            <RevealChild key={p.caption}>
+              <figure className="lux-card group rounded-sm overflow-hidden">
+                <div className="img-overlay">
+                  <img
+                    src={p.src}
+                    alt={p.alt}
+                    width={1280}
+                    height={960}
+                    loading="lazy"
+                    className="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
                 <figcaption className="px-5 py-4 text-xs tracking-[0.25em] uppercase text-muted-foreground">
                   {p.caption}
                 </figcaption>
               </figure>
-            </Reveal>
+            </RevealChild>
           ))}
-        </div>
+        </Reveal>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-3">
+        <Reveal stagger className="mt-10 grid gap-5 sm:grid-cols-3">
           {[
             { t: "Flagship Frontages", d: "Wide, double-height storefronts facing the main road — built for anchor fashion and lifestyle brands." },
             { t: "Guaranteed Footfall", d: "Hundreds of resident families above the arcade, plus city-wide shoppers drawn to the brand mix." },
             { t: "Investor Returns", d: "High-demand retail units with strong rental yield potential and long-term capital appreciation." },
-          ].map((c, i) => (
-            <Reveal key={c.t} delay={i * 80}>
+          ].map((c) => (
+            <RevealChild key={c.t}>
               <div className="lux-card h-full rounded-sm p-7">
                 <h3 className="font-display text-xl">{c.t}</h3>
                 <span className="rule-gold mt-4" />
                 <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{c.d}</p>
               </div>
-            </Reveal>
+            </RevealChild>
           ))}
-        </div>
+        </Reveal>
 
         <Reveal>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 text-center sm:flex-row">
             <p className="text-sm text-muted-foreground">Interested in leasing a shop?</p>
             <a
               href="#enquire"
-              className="rounded-sm bg-gold px-7 py-3 text-sm font-medium tracking-widest uppercase text-primary-foreground transition-transform hover:scale-105"
+              className="btn-shimmer rounded-sm bg-gold px-7 py-3 text-sm font-medium tracking-widest uppercase text-primary-foreground transition-transform hover:scale-105"
             >
               Contact Our Leasing Team
             </a>
@@ -272,28 +308,30 @@ function Index() {
             />
           </Reveal>
 
-          <div className="mt-14 grid gap-5 lg:grid-cols-2">
+          <Reveal stagger className="mt-14 grid gap-5 lg:grid-cols-2">
             {[
               { src: apt1, alt: "1 bed apartment living area interior", cap: "1 Bed Apartment" },
               { src: apt2, alt: "2 bed apartment living and dining area interior", cap: "2 Bed Apartment" },
-            ].map((p, i) => (
-              <Reveal key={p.cap} delay={i * 90}>
-                <figure className="lux-card group overflow-hidden rounded-sm">
-                  <img
-                    src={p.src}
-                    alt={p.alt}
-                    width={1280}
-                    height={960}
-                    loading="lazy"
-                    className="h-72 w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
+            ].map((p) => (
+              <RevealChild key={p.cap}>
+                <figure className="lux-card group rounded-sm overflow-hidden">
+                  <div className="img-overlay">
+                    <img
+                      src={p.src}
+                      alt={p.alt}
+                      width={1280}
+                      height={960}
+                      loading="lazy"
+                      className="h-72 w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                  </div>
                   <figcaption className="px-5 py-4 text-xs tracking-[0.25em] uppercase text-muted-foreground">
                     {p.cap}
                   </figcaption>
                 </figure>
-              </Reveal>
+              </RevealChild>
             ))}
-          </div>
+          </Reveal>
 
           <Reveal>
             <div className="mx-auto mt-14 flex w-full max-w-md rounded-sm border border-border p-1">
@@ -313,14 +351,25 @@ function Index() {
 
           <Reveal>
             <div className="lux-card mt-10 grid overflow-hidden rounded-sm lg:grid-cols-2">
-              <img
-                src={unitData.img}
-                alt={`${unitData.title} interior`}
-                width={1280}
-                height={960}
-                loading="lazy"
-                className="h-72 w-full object-cover lg:h-full"
-              />
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={unit}
+                  className="img-overlay"
+                  initial={{ opacity: 0, scale: 1.04 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.97 }}
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <img
+                    src={unitData.img}
+                    alt={`${unitData.title} interior`}
+                    width={1280}
+                    height={960}
+                    loading="lazy"
+                    className="h-72 w-full object-cover lg:h-full"
+                  />
+                </motion.div>
+              </AnimatePresence>
               <div className="p-8 sm:p-10">
                 <h3 className="font-display text-3xl">{unitData.title}</h3>
                 <p className="mt-2 text-sm tracking-widest uppercase text-gold">Approx. {unitData.size}</p>
@@ -336,7 +385,7 @@ function Index() {
                 </ul>
                 <a
                   href="#enquire"
-                  className="mt-8 inline-block rounded-sm bg-gold px-6 py-3 text-sm tracking-widest uppercase text-primary-foreground transition-transform hover:scale-105"
+                  className="btn-shimmer mt-8 inline-block rounded-sm bg-gold px-6 py-3 text-sm tracking-widest uppercase text-primary-foreground transition-transform hover:scale-105"
                 >
                   Check Availability
                 </a>
@@ -361,35 +410,37 @@ function Index() {
             { src: kids1, alt: "Indoor kids play zone with slides and ball pit inside the mall" },
             { src: kids2, alt: "Children climbing a soft play structure in the family zone" },
           ].map((p, i) => (
-            <Reveal key={p.alt} delay={i * 90}>
-              <img
-                src={p.src}
-                alt={p.alt}
-                width={1280}
-                height={960}
-                loading="lazy"
-                className="h-72 w-full rounded-sm object-cover"
-              />
+            <Reveal key={p.alt} delay={i * 0.15}>
+              <div className="img-overlay rounded-sm">
+                <img
+                  src={p.src}
+                  alt={p.alt}
+                  width={1280}
+                  height={960}
+                  loading="lazy"
+                  className="h-72 w-full object-cover"
+                />
+              </div>
             </Reveal>
           ))}
         </div>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <Reveal stagger className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {[
             { t: "Soft Play & Ball Pit", d: "Cushioned flooring, slides and a ball pit designed for toddlers and young children." },
             { t: "Trained Supervision", d: "On-site staff and secured single-point entry so parents always know where their children are." },
             { t: "Family Seating", d: "Comfortable parent seating around the zone with clear sightlines across the play area." },
             { t: "Right Above the Shops", d: "Located on the first floor beside the fashion wing — shop, eat and play in one visit." },
-          ].map((c, i) => (
-            <Reveal key={c.t} delay={i * 70}>
+          ].map((c) => (
+            <RevealChild key={c.t}>
               <div className="lux-card h-full rounded-sm p-6">
                 <Baby className="h-6 w-6 text-gold" />
                 <h3 className="mt-4 font-display text-lg">{c.t}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{c.d}</p>
               </div>
-            </Reveal>
+            </RevealChild>
           ))}
-        </div>
+        </Reveal>
       </section>
 
       {/* Amenities */}
@@ -402,16 +453,16 @@ function Index() {
               subtitle="Every detail specified to modern standards — for residents, retailers and their customers alike."
             />
           </Reveal>
-          <div className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-            {amenities.map((a, i) => (
-              <Reveal key={a.label} delay={i * 60}>
+          <Reveal stagger className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            {amenities.map((a) => (
+              <RevealChild key={a.label}>
                 <div className="lux-card flex h-full flex-col items-center justify-center gap-3 rounded-sm p-6 text-center">
                   <a.icon className="h-7 w-7 text-gold" />
                   <p className="text-sm text-muted-foreground">{a.label}</p>
                 </div>
-              </Reveal>
+              </RevealChild>
             ))}
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -423,16 +474,16 @@ function Index() {
               center={false}
               eyebrow="Location"
               title="Prime Connectivity, Everyday Convenience"
-              subtitle="Positioned where retail footfall and residential demand meet — easy to reach, easy to return to."
+              subtitle="Positioned at the heart of Krop Risht Bazar, near Shahi Adda Bus Stand — easy to reach, easy to return to."
             />
             <ul className="mt-8 space-y-4">
               {[
-                "5 mins from [Main Road]",
-                "10 mins from [City Landmark]",
-                "Walking distance to [School / College]",
-                "Close to [Hospital]",
-                "Direct access to [Public Transport Route]",
-                "Surrounded by established residential neighbourhoods",
+                "Near Shahi Adda Bus Stand, Chitral",
+                "Krop Risht Bazar, Chitral City Centre",
+                "Walking distance from key transport hubs",
+                "Surrounded by established commercial zones",
+                "Easy access from all directions within Chitral",
+                "Prime retail & residential catchment area",
               ].map((l) => (
                 <li key={l} className="flex items-start gap-3 text-sm text-muted-foreground">
                   <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
@@ -440,22 +491,83 @@ function Index() {
                 </li>
               ))}
             </ul>
-            <p className="mt-6 text-xs text-muted-foreground">
-              Landmarks shown as editable placeholders — final distances to be confirmed.
-            </p>
           </Reveal>
 
           <Reveal delay={120}>
-            <div className="lux-card overflow-hidden rounded-sm">
-              <iframe
-                title="GC Royal Emporium location map"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=74.2%2C31.4%2C74.45%2C31.6&layer=mapnik"
-                className="h-96 w-full border-0 grayscale"
-                loading="lazy"
-              />
-              <p className="border-t border-border px-5 py-3 text-xs tracking-widest uppercase text-muted-foreground">
-                Map placeholder — exact site pin to be added
-              </p>
+            {/* Responsive Google Maps wrapper */}
+            <div
+              style={{
+                borderRadius: "12px",
+                overflow: "hidden",
+                boxShadow: "0 0 0 1px rgba(193,160,98,0.25), 0 8px 32px rgba(0,0,0,0.45)",
+              }}
+            >
+              <div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
+                <iframe
+                  title="GC Royal Emporium location map"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d808.4146323587878!2d71.78692974423029!3d35.857375751424705!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38db5300121e8919%3A0x14fc45062b66704b!2sGC%20ROYAL%20Emporium!5e0!3m2!1sen!2s!4v1787047022133!5m2!1sen!2s"
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    border: 0,
+                  }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                />
+              </div>
+
+              {/* Address + Directions */}
+              <div
+                style={{
+                  background: "rgba(10,15,31,0.95)",
+                  borderTop: "1px solid rgba(193,160,98,0.2)",
+                  padding: "16px 20px",
+                  display: "flex",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "12px",
+                }}
+              >
+                <div className="flex items-start gap-2">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    GC Royal Emporium Chitral,<br />
+                    Near Shahi Adda Bus Stand,<br />
+                    Krop Risht Bazar Chitral
+                  </p>
+                </div>
+                <a
+                  href="https://www.google.com/maps/place/GC+ROYAL+Emporium"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    padding: "8px 18px",
+                    borderRadius: "6px",
+                    background: "linear-gradient(135deg, #c1a062, #e8c97a)",
+                    color: "#0a0f1f",
+                    fontSize: "12px",
+                    fontWeight: 700,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    textDecoration: "none",
+                    whiteSpace: "nowrap",
+                    transition: "opacity 0.2s",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+                  onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+                >
+                  <MapPin className="h-3 w-3" />
+                  Get Directions
+                </a>
+              </div>
             </div>
           </Reveal>
         </div>
@@ -471,18 +583,18 @@ function Index() {
               subtitle="Own a shop or an apartment on a comfortable, transparent schedule — built for salaried families and investors alike."
             />
           </Reveal>
-          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {plan.map((p, i) => (
-              <Reveal key={p.label} delay={i * 80}>
+          <Reveal stagger className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {plan.map((p) => (
+              <RevealChild key={p.label}>
                 <div className="lux-card h-full rounded-sm p-7 text-center">
                   <p className="text-xs tracking-widest uppercase text-gold">{p.label}</p>
                   <p className="mt-4 font-display text-2xl">{p.value}</p>
                   <span className="rule-gold mx-auto mt-4" />
                   <p className="mt-4 text-sm text-muted-foreground">{p.note}</p>
                 </div>
-              </Reveal>
+              </RevealChild>
             ))}
-          </div>
+          </Reveal>
           <Reveal>
             <p className="mt-8 text-center text-xs text-muted-foreground">
               Figures shown as editable placeholders. Request the official payment plan from our sales team.
@@ -581,16 +693,49 @@ function Index() {
                 <li>[Site Address], [City], Pakistan</li>
               </ul>
               <div className="mt-5 flex gap-3">
-                {[Facebook, Instagram, Youtube].map((Icon, i) => (
-                  <a
-                    key={i}
-                    href="#"
-                    aria-label="Social media"
-                    className="rounded-sm border border-border p-2 text-muted-foreground transition-colors hover:border-gold hover:text-gold"
+                <a
+                  href="https://web.facebook.com/profile.php?id=61593589823643"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="rounded-sm border border-border p-2 text-muted-foreground transition-colors hover:border-gold hover:text-gold"
+                >
+                  <Facebook className="h-4 w-4" />
+                </a>
+                <a
+                  href="https://www.instagram.com/etemaad100groups/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="rounded-sm border border-border p-2 text-muted-foreground transition-colors hover:border-gold hover:text-gold"
+                >
+                  <Instagram className="h-4 w-4" />
+                </a>
+                <a
+                  href="https://www.tiktok.com/@ehtemaad100group"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="TikTok"
+                  className="rounded-sm border border-border p-2 text-muted-foreground transition-colors hover:border-gold hover:text-gold"
+                >
+                  <svg
+                    className="h-4 w-4"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
                   >
-                    <Icon className="h-4 w-4" />
-                  </a>
-                ))}
+                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.75a8.18 8.18 0 004.78 1.52V6.83a4.85 4.85 0 01-1.01-.14z" />
+                  </svg>
+                </a>
+                <a
+                  href="https://www.linkedin.com/company/ehtemaad-100-group/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  className="rounded-sm border border-border p-2 text-muted-foreground transition-colors hover:border-gold hover:text-gold"
+                >
+                  <Linkedin className="h-4 w-4" />
+                </a>
               </div>
             </div>
           </div>
@@ -602,15 +747,20 @@ function Index() {
         </div>
       </footer>
 
-      <a
+      <motion.a
         href={WHATSAPP}
         target="_blank"
         rel="noreferrer"
         aria-label="Chat on WhatsApp"
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gold text-primary-foreground shadow-lg transition-transform hover:scale-110"
+        className="wa-pulse-ring fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gold text-primary-foreground shadow-lg"
+        whileHover={{ scale: 1.12 }}
+        whileTap={{ scale: 0.95 }}
+        initial={{ opacity: 0, scale: 0.7 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 1.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
-        <MessageCircle className="h-6 w-6" />
-      </a>
+        <MessageCircle className="relative z-10 h-6 w-6" />
+      </motion.a>
     </div>
   );
 }

@@ -25,22 +25,28 @@ export function SiteNav() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 ${
         scrolled
-          ? "border-b border-border bg-navy-deep/95 py-2 backdrop-blur-md"
-          : "border-b border-transparent bg-transparent py-4"
+          ? "border-b border-white/10 py-2 shadow-lg"
+          : "border-b border-transparent py-4"
       }`}
+      style={{
+        background: scrolled ? "rgba(30, 58, 95, 0.75)" : "rgba(0, 0, 0, 0)",
+        backdropFilter: scrolled ? "blur(10px)" : "none",
+        WebkitBackdropFilter: scrolled ? "blur(10px)" : "none",
+        transition: "background 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease",
+      }}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <a href="#home" className="flex items-center gap-3">
           <img
             src={logo}
             alt="GC Royal Emporium logo"
-            width={48}
-            height={48}
-            className={`object-contain transition-all ${scrolled ? "h-10 w-10" : "h-12 w-12"}`}
+            width={64}
+            height={64}
+            className={`object-contain transition-all ${scrolled ? "h-14 w-14" : "h-16 w-16"}`}
           />
-          <span className="font-display text-base tracking-wide text-foreground sm:text-lg">
+          <span className="font-display text-lg tracking-wide text-foreground sm:text-xl">
             GC Royal <span className="gold-text">Emporium</span>
           </span>
         </a>
@@ -50,7 +56,7 @@ export function SiteNav() {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm tracking-wide text-muted-foreground transition-colors hover:text-gold"
+              className="text-sm font-semibold tracking-wide text-muted-foreground transition-colors hover:text-gold"
             >
               {l.label}
             </a>
@@ -75,14 +81,21 @@ export function SiteNav() {
       </div>
 
       {open && (
-        <nav className="border-t border-border bg-navy-deep/98 px-6 py-4 lg:hidden">
+        <nav
+          className="border-t border-white/10 px-6 py-4 lg:hidden"
+          style={{
+            background: "rgba(30, 58, 95, 0.96)",
+            backdropFilter: "blur(12px) saturate(1.4)",
+            WebkitBackdropFilter: "blur(12px) saturate(1.4)",
+          }}
+        >
           <ul className="flex flex-col gap-3">
             {links.map((l) => (
               <li key={l.href}>
                 <a
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="block py-1 text-sm tracking-wide text-muted-foreground hover:text-gold"
+                  className="block py-1 text-sm font-semibold tracking-wide text-muted-foreground hover:text-gold"
                 >
                   {l.label}
                 </a>

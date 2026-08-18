@@ -170,7 +170,7 @@
   --gold-soft: oklch(0.86 0.075 82);
   --navy-deep: oklch(0.12 0.03 265);
   --gradient-gold: linear-gradient(100deg, oklch(0.68 0.1 70), oklch(0.86 0.075 82), oklch(0.72 0.11 78));
-  --gradient-veil: linear-gradient(180deg, oklch(0.12 0.03 265 / 0.55) 0%, oklch(0.12 0.03 265 / 0.72) 55%, oklch(0.145 0.028 265) 100%);
+  --gradient-veil: linear-gradient(180deg, oklch(0.12 0.03 265 / 0.30) 0%, oklch(0.12 0.03 265 / 0.42) 55%, oklch(0.145 0.028 265 / 0.85) 100%);
   --shadow-lux: 0 24px 60px -24px oklch(0.05 0.02 265 / 0.8);
 }
 
@@ -218,4 +218,82 @@
     border-color: var(--gold);
     box-shadow: var(--shadow-lux);
   }
+}
+
+/*
+ * img-overlay — reusable navy blue hover/tap overlay for images.
+ * Apply to the direct parent wrapper of <img> (must have position:relative + overflow:hidden).
+ * The ::after pseudo-element fades in on :hover and :active.
+ * pointer-events:none keeps clicks/taps fully functional on the image beneath.
+ */
+@utility img-overlay {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--navy-deep);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  &:hover::after {
+    opacity: 0.45;
+  }
+  &:active::after {
+    opacity: 0.55;
+  }
+}
+
+/* ── Keyframe animations ───────────────────────────────────────── */
+
+/* Gold shimmer sweep — applied to CTA buttons */
+@keyframes gold-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+@utility btn-shimmer {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.25) 50%,
+      transparent 70%
+    );
+    background-size: 200% 100%;
+    animation: gold-shimmer 2.4s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+/* WhatsApp FAB breathing pulse ring */
+@keyframes wa-pulse {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  70%  { transform: scale(1.55); opacity: 0;   }
+  100% { transform: scale(1.55); opacity: 0;   }
+}
+
+@utility wa-pulse-ring {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: var(--gold);
+    animation: wa-pulse 2s ease-out infinite;
+    pointer-events: none;
+  }
+}
+
+/* Subtle floating animation for hero decorators */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
 }
