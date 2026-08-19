@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence, animate, useInView, useMotionValue, useTransform } from "framer-motion";
 import { heroSlideUp, staggerContainer, staggerChild, viewportOnce } from "@/lib/motion";
 import {
   Building2,
@@ -71,8 +71,8 @@ export const Route = createFileRoute("/")({
 });
 
 const stats = [
-  { icon: Building2, value: "XX", label: "Total Floors" },
-  { icon: Store, value: "XXX+", label: "Shops Available" },
+  { icon: Building2, value: "24", label: "Total Floors" },
+  { icon: Store, value: "150+", label: "Shops Available" },
   { icon: BedDouble, value: "1 & 2 Bed", label: "Apartments" },
   { icon: MapPin, value: "Prime", label: "City Location" },
 ];
@@ -122,6 +122,123 @@ function SectionTitle({
       {subtitle && <p className="mt-6 text-sm leading-relaxed text-muted-foreground sm:text-base">{subtitle}</p>}
     </div>
   );
+}
+
+function TiltImage({ src, alt }: { src: string; alt: string }) {
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+  const [glarePosition, setGlarePosition] = useState({ x: 50, y: 50 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isHovered) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    
+    // Calculate rotation (-10 to 10 degrees)
+    const rotateYVal = ((mouseX / width) - 0.5) * 20;
+    const rotateXVal = ((mouseY / height) - 0.5) * -20;
+    
+    setRotateX(rotateXVal);
+    setRotateY(rotateYVal);
+    
+    // Glare position
+    setGlarePosition({
+      x: (mouseX / width) * 100,
+      y: (mouseY / height) * 100,
+    });
+  };
+
+  return (
+    <motion.div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setRotateX(0);
+        setRotateY(0);
+      }}
+      onMouseMove={handleMouseMove}
+      style={{
+        perspective: 1000,
+      }}
+      className="relative h-72 w-full"
+    >
+      <motion.div
+        animate={{
+          rotateX: isHovered ? rotateX : 0,
+          rotateY: isHovered ? rotateY : 0,
+          scale: isHovered ? 1.02 : 1,
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 20, mass: 0.5 }}
+        className="relative h-full w-full overflow-hidden"
+        style={{
+          borderRadius: "16px",
+          border: "1px solid rgba(193,160,98,0.25)",
+          boxShadow: isHovered 
+            ? "0 20px 40px rgba(0,0,0,0.4), 0 0 25px rgba(193,160,98,0.15)" 
+            : "0 10px 30px rgba(0,0,0,0.2)",
+          transformStyle: "preserve-3d",
+        }}
+      >
+        <img
+          src={src}
+          alt={alt}
+          width={1280}
+          height={960}
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
+        
+        {/* Glare effect */}
+        <motion.div
+          animate={{ opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+          className="pointer-events-none absolute inset-0 z-10"
+          style={{
+            background: `radial-gradient(circle at ${glarePosition.x}% ${glarePosition.y}%, rgba(255,255,255,0.3) 0%, transparent 60%)`,
+            mixBlendMode: "overlay",
+          }}
+        />
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function Counter({ from, to, suffix = "", prefix = "" }: { from: number; to: number; suffix?: string; prefix?: string }) {
+  const ref = React.useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.5 });
+  const count = useMotionValue(from);
+  const rounded = useTransform(count, (latest) => Math.round(latest));
+
+  React.useEffect(() => {
+    if (inView) {
+      const controls = animate(count, to, { duration: 2, ease: "easeOut" });
+      return controls.stop;
+    }
+  }, [inView, count, to]);
+
+  return <motion.span ref={ref}>{rounded}</motion.span>;
+}
+
+function StatValue({ value }: { value: string }) {
+  // Check if value is like "150+" or "25"
+  const match = value.match(/^(\D*)(\d+)(\D*)$/);
+  if (match) {
+    const [, prefix, numStr, suffix] = match;
+    const num = parseInt(numStr, 10);
+    return (
+      <>
+        {prefix}
+        <Counter from={0} to={num} />
+        {suffix}
+      </>
+    );
+  }
+  return <span>{value}</span>;
 }
 
 function Index() {
@@ -217,32 +334,50 @@ function Index() {
       </section>
 
       {/* Stats strip */}
-      <section className="border-y border-border bg-navy-deep">
+      <section className="relative z-30 -mt-4 sm:-mt-6 mb-0 px-4 sm:px-6">
         <motion.div
-          className="mx-auto grid max-w-7xl grid-cols-2 gap-px px-4 sm:px-6 lg:grid-cols-4"
+          className="mx-auto max-w-6xl rounded-[2rem] p-2 sm:p-4"
+          style={{
+            background: "rgba(10, 15, 31, 0.6)",
+            backdropFilter: "blur(15px)",
+            WebkitBackdropFilter: "blur(15px)",
+            border: "1px solid rgba(212, 175, 55, 0.2)",
+            boxShadow: "0 20px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)",
+          }}
           variants={staggerContainer(0.12, 0.05)}
           initial="hidden"
           whileInView="visible"
           viewport={{ ...viewportOnce, amount: 0.2 }}
         >
-          {stats.map((s) => (
-            <motion.div
-              key={s.label}
-              className="flex items-center gap-4 px-2 py-8"
-              variants={staggerChild}
-            >
-              <s.icon className="h-7 w-7 shrink-0 text-gold" />
-              <div>
-                <p className="font-display text-xl sm:text-2xl">{s.value}</p>
-                <p className="text-xs tracking-widest uppercase text-muted-foreground">{s.label}</p>
-              </div>
-            </motion.div>
-          ))}
+          <div className="grid grid-cols-2 divide-x divide-white/5 lg:grid-cols-4 lg:divide-x lg:divide-y-0 divide-y divide-white/5 lg:divide-y-0">
+            {stats.map((s) => (
+              <motion.div
+                key={s.label}
+                className="group flex flex-col items-center justify-center gap-3 p-6 text-center sm:flex-row sm:text-left transition-colors duration-300 hover:bg-white/[0.02] rounded-xl"
+                variants={staggerChild}
+              >
+                <motion.div
+                  whileHover={{ scale: 1.15, y: -4 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                >
+                  <s.icon className="h-8 w-8 shrink-0 text-gold drop-shadow-[0_0_8px_rgba(212,175,55,0.4)] transition-transform group-hover:rotate-12 group-hover:scale-110" />
+                </motion.div>
+                <div>
+                  <p className="font-display text-2xl sm:text-3xl text-white transition-colors duration-300 group-hover:text-[#e8c97a] group-hover:drop-shadow-[0_0_8px_rgba(232,201,122,0.4)]">
+                    <StatValue value={s.value} />
+                  </p>
+                  <p className="mt-1 text-xs tracking-widest uppercase text-muted-foreground transition-colors duration-300 group-hover:text-white/80">
+                    {s.label}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </section>
 
       {/* Shops */}
-      <section id="shops" className="mx-auto max-w-7xl px-6 py-24 sm:py-32">
+      <section id="shops" className="mx-auto max-w-7xl px-6 pt-10 pb-24 sm:pt-12 sm:pb-32">
         <Reveal>
           <SectionTitle
             eyebrow="Retail Arcade"
@@ -280,11 +415,22 @@ function Index() {
             { t: "Investor Returns", d: "High-demand retail units with strong rental yield potential and long-term capital appreciation." },
           ].map((c) => (
             <RevealChild key={c.t}>
-              <div className="glass-feature-card h-full rounded-[8px] p-7">
+              <motion.div 
+                className="glass-feature-card h-full rounded-[8px] p-7"
+                initial={{
+                  boxShadow: "-15px 15px 40px rgba(212, 175, 55, 0.15)",
+                  y: 0,
+                }}
+                whileHover={{
+                  boxShadow: "-20px 20px 60px rgba(212, 175, 55, 0.3)",
+                  y: -8,
+                }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
                 <h3 className="font-display text-xl text-white drop-shadow-md">{c.t}</h3>
                 <span className="rule-gold mt-4" />
                 <p className="mt-4 text-sm leading-relaxed text-[#E2E8F0] drop-shadow-sm">{c.d}</p>
-              </div>
+              </motion.div>
             </RevealChild>
           ))}
         </Reveal>
@@ -415,16 +561,7 @@ function Index() {
             { src: kids2, alt: "Children climbing a soft play structure in the family zone" },
           ].map((p, i) => (
             <Reveal key={p.alt} delay={i * 0.15}>
-              <div className="img-overlay rounded-sm">
-                <img
-                  src={p.src}
-                  alt={p.alt}
-                  width={1280}
-                  height={960}
-                  loading="lazy"
-                  className="h-72 w-full object-cover"
-                />
-              </div>
+              <TiltImage src={p.src} alt={p.alt} />
             </Reveal>
           ))}
         </div>
@@ -437,11 +574,22 @@ function Index() {
             { t: "Right Above the Shops", d: "Located on the first floor beside the fashion wing — shop, eat and play in one visit." },
           ].map((c) => (
             <RevealChild key={c.t}>
-              <div className="glass-feature-card h-full rounded-[8px] p-6">
+              <motion.div 
+                className="glass-feature-card h-full rounded-[8px] p-6"
+                initial={{
+                  boxShadow: "-15px 15px 40px rgba(212, 175, 55, 0.15)",
+                  y: 0,
+                }}
+                whileHover={{
+                  boxShadow: "-20px 20px 60px rgba(212, 175, 55, 0.3)",
+                  y: -8,
+                }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+              >
                 <Baby className="h-6 w-6 text-gold drop-shadow-md" />
                 <h3 className="mt-4 font-display text-lg text-white drop-shadow-md">{c.t}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-[#E2E8F0] drop-shadow-sm">{c.d}</p>
-              </div>
+              </motion.div>
             </RevealChild>
           ))}
         </Reveal>
