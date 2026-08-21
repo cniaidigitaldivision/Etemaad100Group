@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import React, { useState } from "react";
 import { motion, AnimatePresence, animate, useInView, useMotionValue, useTransform } from "framer-motion";
 import { heroSlideUp, staggerContainer, staggerChild, viewportOnce } from "@/lib/motion";
@@ -45,8 +45,8 @@ import kids1 from "@/assets/kids-1.jpg";
 import kids2 from "@/assets/kids-2.jpg";
 import bg1 from "@/assets/bg1.jpeg";
 
-const WHATSAPP = "https://wa.me/920000000000";
-const PHONE = "tel:+920000000000";
+const WHATSAPP = "https://wa.me/923307771591";
+const PHONE = "tel:+923307771591";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -71,10 +71,10 @@ export const Route = createFileRoute("/")({
 });
 
 const stats = [
-  { icon: Building2, value: "24", label: "Total Floors" },
-  { icon: Store, value: "150+", label: "Shops Available" },
-  { icon: BedDouble, value: "1 & 2 Bed", label: "Apartments" },
-  { icon: MapPin, value: "Prime", label: "City Location" },
+  { icon: Building2, value: "10", label: "Total Floors" },
+  { icon: Store, value: "3", label: "Commercial Storeys" },
+  { icon: BedDouble, value: "7", label: "Residential Floors" },
+  { icon: MapPin, value: "6 Kanal", label: "Project Area" },
 ];
 
 const shopPics = [
@@ -97,10 +97,10 @@ const amenities = [
 ];
 
 const plan = [
-  { icon: Percent, label: "Booking Amount", value: "XX%", note: "At the time of booking" },
-  { icon: CalendarDays, label: "Confirmation", value: "XX%", note: "Within 30 days" },
-  { icon: Calculator, label: "Quarterly Installments", value: "XX x PKR XXX,XXX", note: "Spread over XX quarters" },
-  { icon: KeyRound, label: "On Possession", value: "XX%", note: "At handover" },
+  { icon: Store, label: "Lower Ground Floor", value: "PKR 25K - 35K / sq.ft", note: "35% Downpayment | 100K Instalment | Rest on Possession", link: "/payment-plan/lower-ground" },
+  { icon: Store, label: "Ground Floor", value: "PKR 40K - 45K / sq.ft", note: "35% Downpayment | 100K Instalment | Rest on Possession", link: "/payment-plan/ground-floor" },
+  { icon: Store, label: "1st Floor", value: "PKR 20K - 25K / sq.ft", note: "35% Downpayment | 100K Instalment | Rest on Possession", link: "/payment-plan/first-floor" },
+  { icon: BedDouble, label: "Residential (7 Floors)", value: "PKR 18.5K / sq.ft", note: "35% Downpayment | 60K Instalment | Rest on Possession", link: "/payment-plan/residential" },
 ];
 
 function SectionTitle({
@@ -116,10 +116,10 @@ function SectionTitle({
 }) {
   return (
     <div className={center ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
-      <p className="font-display text-lg font-medium tracking-wider capitalize text-gold">{eyebrow}</p>
+      <p className="tagline font-display text-lg font-medium tracking-wider capitalize text-gold">{eyebrow}</p>
       <h2 className="mt-4 font-display text-3xl leading-tight sm:text-4xl md:text-5xl">{title}</h2>
       <span className={`rule-gold mt-6 ${center ? "mx-auto" : ""}`} />
-      {subtitle && <p className="mt-6 text-sm leading-relaxed text-muted-foreground sm:text-base">{subtitle}</p>}
+      {subtitle && <p className="subtitle mt-6 text-sm leading-relaxed text-muted-foreground sm:text-base">{subtitle}</p>}
     </div>
   );
 }
@@ -302,7 +302,7 @@ function Index() {
           variants={staggerContainer(0.18, 0.25)}
         >
           <motion.p
-            className="mx-auto max-w-2xl font-display text-lg italic text-gold-soft sm:text-2xl"
+            className="tagline mx-auto max-w-2xl text-lg text-gold-soft sm:text-2xl"
             variants={heroSlideUp(0)}
           >
             Where Luxury Meets Opportunity
@@ -318,7 +318,7 @@ function Index() {
             variants={heroSlideUp(0)}
           />
           <motion.p
-            className="mx-auto mt-6 max-w-2xl font-display text-lg italic text-gold-soft sm:text-2xl"
+            className="tagline mx-auto mt-6 max-w-2xl text-lg text-gold-soft sm:text-2xl"
             variants={heroSlideUp(0)}
           >
             Where Retail Royalty Meets Modern Living
@@ -800,8 +800,11 @@ function Index() {
           <Reveal stagger className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {plan.map((p) => (
               <RevealChild key={p.label}>
-                <div
+                <Link
+                  to={p.link}
                   style={{
+                    display: "block",
+                    textDecoration: "none",
                     background: "rgba(6,11,26,0.72)",
                     border: "1px solid rgba(193,160,98,0.30)",
                     borderRadius: "14px",
@@ -811,15 +814,16 @@ function Index() {
                     WebkitBackdropFilter: "blur(12px)",
                     boxShadow: "0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(193,160,98,0.12)",
                     transition: "transform 0.25s ease, box-shadow 0.25s ease",
+                    cursor: "pointer",
                   }}
                   onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)";
-                    (e.currentTarget as HTMLDivElement).style.boxShadow =
+                    (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-4px)";
+                    (e.currentTarget as HTMLAnchorElement).style.boxShadow =
                       "0 16px 48px rgba(0,0,0,0.55), inset 0 1px 0 rgba(193,160,98,0.18)";
                   }}
                   onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
-                    (e.currentTarget as HTMLDivElement).style.boxShadow =
+                    (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
+                    (e.currentTarget as HTMLAnchorElement).style.boxShadow =
                       "0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(193,160,98,0.12)";
                   }}
                 >
@@ -866,7 +870,7 @@ function Index() {
                     }}
                   />
                   <p style={{ fontSize: "0.8rem", color: "rgba(200,190,175,0.75)" }}>{p.note}</p>
-                </div>
+                </Link>
               </RevealChild>
             ))}
           </Reveal>
@@ -923,7 +927,7 @@ function Index() {
             />
             <div className="mt-8 space-y-4 text-sm text-muted-foreground">
               <a href={PHONE} className="flex items-center gap-3 hover:text-gold">
-                <Phone className="h-4 w-4 text-gold" /> +92 000 0000000
+                <Phone className="h-4 w-4 text-gold" /> +92 330 7771591
               </a>
               <a href="mailto:sales@gcroyalemporium.com" className="flex items-center gap-3 hover:text-gold">
                 <Mail className="h-4 w-4 text-gold" /> sales@gcroyalemporium.com
@@ -991,7 +995,7 @@ function Index() {
               <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
                 <li>
                   <a href={PHONE} className="hover:text-gold">
-                    +92 000 0000000
+                    +92 330 7771591
                   </a>
                 </li>
                 <li>

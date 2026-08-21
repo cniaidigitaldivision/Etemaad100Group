@@ -10,33 +10,89 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PaymentPlanFirstFloorRouteImport } from './routes/payment-plan/first-floor'
+import { Route as PaymentPlanGroundFloorRouteImport } from './routes/payment-plan/ground-floor'
+import { Route as PaymentPlanLowerGroundRouteImport } from './routes/payment-plan/lower-ground'
+import { Route as PaymentPlanResidentialRouteImport } from './routes/payment-plan/residential'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PaymentPlanFirstFloorRoute = PaymentPlanFirstFloorRouteImport.update({
+  id: '/payment-plan/first-floor',
+  path: '/payment-plan/first-floor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentPlanGroundFloorRoute = PaymentPlanGroundFloorRouteImport.update({
+  id: '/payment-plan/ground-floor',
+  path: '/payment-plan/ground-floor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentPlanLowerGroundRoute = PaymentPlanLowerGroundRouteImport.update({
+  id: '/payment-plan/lower-ground',
+  path: '/payment-plan/lower-ground',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentPlanResidentialRoute = PaymentPlanResidentialRouteImport.update({
+  id: '/payment-plan/residential',
+  path: '/payment-plan/residential',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/payment-plan/first-floor': typeof PaymentPlanFirstFloorRoute
+  '/payment-plan/ground-floor': typeof PaymentPlanGroundFloorRoute
+  '/payment-plan/lower-ground': typeof PaymentPlanLowerGroundRoute
+  '/payment-plan/residential': typeof PaymentPlanResidentialRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/payment-plan/first-floor': typeof PaymentPlanFirstFloorRoute
+  '/payment-plan/ground-floor': typeof PaymentPlanGroundFloorRoute
+  '/payment-plan/lower-ground': typeof PaymentPlanLowerGroundRoute
+  '/payment-plan/residential': typeof PaymentPlanResidentialRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/payment-plan/first-floor': typeof PaymentPlanFirstFloorRoute
+  '/payment-plan/ground-floor': typeof PaymentPlanGroundFloorRoute
+  '/payment-plan/lower-ground': typeof PaymentPlanLowerGroundRoute
+  '/payment-plan/residential': typeof PaymentPlanResidentialRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/payment-plan/first-floor'
+    | '/payment-plan/ground-floor'
+    | '/payment-plan/lower-ground'
+    | '/payment-plan/residential'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/payment-plan/first-floor'
+    | '/payment-plan/ground-floor'
+    | '/payment-plan/lower-ground'
+    | '/payment-plan/residential'
+  id:
+    | '__root__'
+    | '/'
+    | '/payment-plan/first-floor'
+    | '/payment-plan/ground-floor'
+    | '/payment-plan/lower-ground'
+    | '/payment-plan/residential'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  PaymentPlanFirstFloorRoute: typeof PaymentPlanFirstFloorRoute
+  PaymentPlanGroundFloorRoute: typeof PaymentPlanGroundFloorRoute
+  PaymentPlanLowerGroundRoute: typeof PaymentPlanLowerGroundRoute
+  PaymentPlanResidentialRoute: typeof PaymentPlanResidentialRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +104,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/payment-plan/first-floor': {
+      id: '/payment-plan/first-floor'
+      path: '/payment-plan/first-floor'
+      fullPath: '/payment-plan/first-floor'
+      preLoaderRoute: typeof PaymentPlanFirstFloorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payment-plan/ground-floor': {
+      id: '/payment-plan/ground-floor'
+      path: '/payment-plan/ground-floor'
+      fullPath: '/payment-plan/ground-floor'
+      preLoaderRoute: typeof PaymentPlanGroundFloorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payment-plan/lower-ground': {
+      id: '/payment-plan/lower-ground'
+      path: '/payment-plan/lower-ground'
+      fullPath: '/payment-plan/lower-ground'
+      preLoaderRoute: typeof PaymentPlanLowerGroundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payment-plan/residential': {
+      id: '/payment-plan/residential'
+      path: '/payment-plan/residential'
+      fullPath: '/payment-plan/residential'
+      preLoaderRoute: typeof PaymentPlanResidentialRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  PaymentPlanFirstFloorRoute: PaymentPlanFirstFloorRoute,
+  PaymentPlanGroundFloorRoute: PaymentPlanGroundFloorRoute,
+  PaymentPlanLowerGroundRoute: PaymentPlanLowerGroundRoute,
+  PaymentPlanResidentialRoute: PaymentPlanResidentialRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -178,14 +178,20 @@
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
   --color-navy-deep: var(--navy-deep);
-  --font-display: "Playfair Display", Georgia, serif;
-  --font-sans: "Jost", ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Poppins', sans-serif;
+  --font-sans: 'Poppins', sans-serif;
 }
 
 @layer base {
   html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
-  body { font-family: var(--font-sans); }
-  h1, h2, h3, .font-display { font-family: var(--font-display); }
+  body { 
+    font-family: var(--font-sans); 
+    font-weight: 300;
+  }
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-sans) !important;
+    font-weight: 700 !important;
+  }
 }
 
 @utility gold-text {
